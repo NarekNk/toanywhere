@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCode } from "../api/api";
+// import { getCode } from "../api/api";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -8,7 +8,7 @@ const Auth = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    getCode(email, navigate);
+    // getCode(email, navigate);
   };
 
   return (

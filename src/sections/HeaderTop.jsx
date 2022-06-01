@@ -6,7 +6,7 @@ const HeaderTop = () => {
   return (
     <>
       <div className="header__top">
-        <a className="logo header__logo" href="#">
+        <a className="logo header__logo" href="/">
           <img src={logo} loading="lazy" alt="Логотип" width="70" height="50" />
         </a>
         <h2 className="header__title">Бухара. Прогулка по Ляб-и Хауз</h2>

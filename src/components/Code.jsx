@@ -1,20 +1,29 @@
 import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendCode } from "../api/api";
+import { checkCode, setCodeError } from "../redux/reducer";
 
-const Code = ({ email }) => {
+const Code = ({ email, checkCode, codeError, setCodeError }) => {
   const [code, setCode] = useState("");
   const navigate = useNavigate();
+  const format = /^[0-9]{4}$/;
+
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
 
   const submitForm = (e) => {
     e.preventDefault();
-    sendCode(email, code);
+    if (format.test(code)) {
+      checkCode(email, code);
+    } else {
+      setCodeError("4 цифры из смс");
+    }
   };
 
   return (
     <>
       <h3 className="header__subtitle">Введите код</h3>
+      {codeError && <p className="error">{codeError}</p>}
       <form className="form" onSubmit={submitForm}>
         <div className="form__inner" style={{ width: "45%" }}>
           <label className="form__label">
@@ -40,7 +49,8 @@ const Code = ({ email }) => {
 const mapStateToProps = (state) => {
   return {
     email: state.email,
+    codeError: state.codeError,
   };
 };
 
-export default connect(mapStateToProps, {})(Code);
+export default connect(mapStateToProps, { checkCode, setCodeError })(Code);

@@ -7,28 +7,8 @@ html {
 *::before {
   -webkit-box-sizing: inherit;
   box-sizing: inherit;
-}
-ul,
-ol {
-  padding: 0;
-}
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ul,
-ol,
-li,
-figure,
-figcaption,
-blockquote,
-dl,
-dd {
   margin: 0;
+  padding: 0;
 }
 ul {
   list-style: none;
@@ -514,4 +494,124 @@ body {
 }
 .social__link:hover {
   opacity: 0.5;
+}
+
+/* my styles */
+
+.layout {
+  width: 100%;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ff7c33;
+  border-radius: 32px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rating {
+  margin: 20px 0;
+}
+
+.saveTour {
+  width: 100%;
+  padding: 13px;
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 7px;
+  -webkit-transition: color 0.3s ease, background-color 0.3s ease;
+  -o-transition: color 0.3s ease, background-color 0.3s ease;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  color: #fff;
+  background-color: #ff7c33;
+}
+
+.saveTour:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+.rateContainer {
+  max-width: 480px;
+  width: 100%;
+  margin: auto;
+}
+
+.guideImg {
+  /* width: 100%; */
+  max-height: 200px;
+
+  border-radius: 27px;
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+.guideImg img {
+  margin: 0 auto;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.guideName {
+  color: #ff7c33;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+  .guideImg {
+    width: 100%;
+    height: 210px;
+    margin-bottom: 15px;
+    margin-right: 0;
+  }
+}
+
+.ratingSubtitle {
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.ratingTop {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.ratingTop .logo {
+  justify-self: flex-start;
+}
+@media (max-width: 768px) {
+  .ratingTop {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+}
+
+.error {
+  text-align: center;
+  color: red;
+  margin: 10px;
 }

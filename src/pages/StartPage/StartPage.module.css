@@ -1,0 +1,315 @@
+html {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*,
+*::after,
+*::before {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style: none;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../../fonts/Roboto-Regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../../fonts/Roboto-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../../fonts/Roboto-Bold.woff") format("woff");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../../fonts/Roboto-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #333;
+  overflow-x: hidden;
+}
+.body--hidden {
+  overflow: hidden;
+}
+.container {
+  max-width: 1440px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+.sr-only {
+  position: absolute;
+  width: 0px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image: url("../../images/bg-body.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: scroll;
+}
+.header__logo {
+  width: 90px;
+  height: 70px;
+  margin-bottom: 10px;
+}
+.header__logo img {
+  width: 100%;
+  height: 100%;
+}
+@media (max-width: 768px) {
+  .header__logo {
+    width: 90px;
+    height: 70px;
+  }
+}
+.header__container {
+  max-width: 450px;
+  width: 100%;
+  margin: auto;
+}
+.header__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 25px;
+  padding-top: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ff7c33;
+  border-radius: 32px;
+}
+@media (max-width: 768px) {
+  .header__row {
+    padding: 15px;
+  }
+}
+.header__title {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+@media (max-width: 768px) {
+  .header__title {
+    font-size: 25px;
+    margin-bottom: 30px;
+  }
+}
+.header__img {
+  width: 100%;
+  height: 170px;
+  margin-bottom: 15px;
+  border-radius: 27px;
+  overflow: hidden;
+}
+.header__img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+@media (max-width: 768px) {
+  .header__img {
+    width: 100%;
+    height: 260px;
+    margin-bottom: 20px;
+    margin-right: 0;
+  }
+}
+.header__price {
+  font-weight: 700;
+  font-size: 18px;
+  color: #ff7c33;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.header__price span {
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  .header__price {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+}
+.header__timer {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+.header__time {
+  white-space: nowrap;
+}
+.header__app {
+  display: inline-block;
+  margin-bottom: 25px;
+  padding: 15px 40px;
+  padding-right: 80px;
+  font-size: 17px;
+  font-weight: 700;
+  background-color: #fff;
+  color: #000;
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 17px;
+  background-image: url("../../images/icons/aw-join1.svg");
+  background-size: 50px 100%;
+  background-position: right -2% center;
+  background-repeat: no-repeat;
+  -webkit-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.header__app:hover {
+  opacity: 0.5;
+}
+@media (max-width: 768px) {
+  .header__app {
+    padding: 15px 25px;
+    padding-right: 70px;
+    background-size: 55px 100%;
+  }
+}
+.header__links {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin: 0 -3px;
+}
+.header__item {
+  padding: 3px;
+}
+.header__link {
+  display: inline-block;
+  width: 185px;
+  height: 45px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  -webkit-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.header__link:hover {
+  opacity: 0.5;
+}
+.social {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.social__descr {
+  font-weight: 600;
+  font-size: 22px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
+.social__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.social__item:not(:last-child) {
+  margin-right: 20px;
+}
+.social__link {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  -webkit-transition: 0.3s ease;
+  -o-transition: 0.3s ease;
+  transition: 0.3s ease;
+}
+.social__link:hover {
+  opacity: 0.5;
+}
