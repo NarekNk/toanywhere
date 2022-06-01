@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { checkCode, setCodeError } from "../redux/reducer";
+import { authMe, checkCode, setCodeError } from "../redux/reducer";
 
-const Code = ({ email, checkCode, codeError, setCodeError }) => {
+const Code = ({
+  email,
+  checkCode,
+  codeError,
+  setCodeError,
+  uid,
+  isValidCode,
+  authMe,
+}) => {
   const [code, setCode] = useState("");
   const navigate = useNavigate();
   const format = /^[0-9]{4}$/;
 
-  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  const [cookies, setCookie] = useCookies([]);
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -19,6 +27,15 @@ const Code = ({ email, checkCode, codeError, setCodeError }) => {
       setCodeError("4 цифры из смс");
     }
   };
+
+  useEffect(() => {
+    if (isValidCode) {
+      setCookie("uid", uid, { path: "/" });
+      const sid = String(Math.random().toFixed(19)).slice(2, 21);
+      setCookie("sid", sid, { path: "/" });
+      authMe(uid, sid);
+    }
+  }, [isValidCode]);
 
   return (
     <>
@@ -50,7 +67,11 @@ const mapStateToProps = (state) => {
   return {
     email: state.email,
     codeError: state.codeError,
+    uid: state.uid,
+    isValidCode: state.isValidCode,
   };
 };
 
-export default connect(mapStateToProps, { checkCode, setCodeError })(Code);
+export default connect(mapStateToProps, { checkCode, setCodeError, authMe })(
+  Code
+);

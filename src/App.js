@@ -1,3 +1,4 @@
+import { CookiesProvider } from "react-cookie";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -9,13 +10,15 @@ import store from "./redux/store";
 const App = () => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="*" element={<AuthPage />} />
-          {/* <Route path="*" element={<RatePage />} /> */}
-          {/* <Route path="*" element={<StartPage />} /> */}
-        </Routes>
-      </BrowserRouter>
+      <CookiesProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="*" element={<AuthPage />} />
+            {/* <Route path="*" element={<RatePage />} /> */}
+            {/* <Route path="*" element={<StartPage />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </CookiesProvider>
     </Provider>
   );
 };

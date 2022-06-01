@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { getCode } from "../api/api";
+import { authMe } from "../redux/reducer";
 
-const Auth = () => {
+const Auth = ({ authMe }) => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
+  const [cookies, setCookie] = useCookies([]);
+
   const submitForm = (e) => {
     e.preventDefault();
-    // getCode(email, navigate);
   };
+
+  useEffect(() => {
+    if (cookies.uid && cookies.sid) {
+      authMe(cookies.uid, cookies.sid);
+    }
+  }, []);
 
   return (
     <>
@@ -58,4 +67,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default connect(null, { authMe })(Auth);

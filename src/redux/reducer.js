@@ -1,15 +1,16 @@
-import { useCookies } from "react-cookie";
 import { authAPI } from "../api/api";
 
 const SET_EMAIL = "SET_EMAIL";
 const SET_UID = "SET_UID";
 const SET_CODE_ERROR = "SET_CODE_ERROR";
 const SET_EMAIL_ERROR = "SET_EMAIL_ERROR";
+const SET_IS_VALID_CODE = "SET_IS_VALID_CODE";
 
 const initialState = {
   isAuth: false,
   email: null,
   uid: null,
+  isValidCode: false,
   codeError: null,
   emailError: null,
 };
@@ -36,6 +37,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         emailError: action.emailError,
       };
+    case SET_IS_VALID_CODE:
+      return {
+        ...state,
+        isValidCode: action.isValidCode,
+      };
     default:
       return state;
   }
@@ -51,6 +57,11 @@ export const setEmailError = (emailError) => ({
   type: SET_EMAIL_ERROR,
   emailError,
 });
+export const setIsValidCode = (isValidCode) => ({
+  type: SET_IS_VALID_CODE,
+  isValidCode,
+});
+
 export const getCode = (email, navigate) => async (dispatch) => {
   await authAPI
     .getCode(email)
@@ -83,13 +94,8 @@ export const checkCode = (email, code) => async (dispatch) => {
       console.log(res);
       switch (res.data.status) {
         case "ok":
-          const [cookies, setCookie, removeCookie] = useCookies([
-            "authCookies",
-          ]);
-          setCookie("uid", res.data.uid);
-          console.log(res.data.uid);
-          console.log(cookies.uid);
-          // console.log("ok");
+          dispatch(setUid(res.data.uid));
+          dispatch(setIsValidCode(true));
           break;
         case "vcode error":
           dispatch(setCodeError("Не верный код! Попробуйте еще раз!"));
@@ -99,7 +105,23 @@ export const checkCode = (email, code) => async (dispatch) => {
       }
     })
     .catch((err) => {
-      console.log("qaq");
+      console.log(err);
+    });
+};
+
+export const authMe = (uid, sid) => async (dispatch) => {
+  await authAPI
+    .authMe(uid, sid)
+    .then((res) => {
+      if (res.data.status === "ok") {
+        console.log("first off");
+      } else {
+        // redirect
+        console.log("qaq");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
 };
 
