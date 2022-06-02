@@ -1,14 +1,15 @@
 import React from "react";
 import logo from "../images/logo.svg";
 import headerImg from "../images/header-img.jpg";
+import { NavLink } from "react-router-dom";
 
 const HeaderTop = () => {
   return (
     <>
       <div className="header__top">
-        <a className="logo header__logo" href="/">
+        <NavLink className="logo header__logo" to={"/"}>
           <img src={logo} loading="lazy" alt="Логотип" width="70" height="50" />
-        </a>
+        </NavLink>
         <h2 className="header__title">Бухара. Прогулка по Ляб-и Хауз</h2>
       </div>
       <div className="header__inner">

@@ -5,6 +5,7 @@ const SET_UID = "SET_UID";
 const SET_CODE_ERROR = "SET_CODE_ERROR";
 const SET_EMAIL_ERROR = "SET_EMAIL_ERROR";
 const SET_IS_VALID_CODE = "SET_IS_VALID_CODE";
+const SET_IS_LOGGING = "SET_IS_LOGGING";
 
 const initialState = {
   isAuth: false,
@@ -13,6 +14,7 @@ const initialState = {
   isValidCode: false,
   codeError: null,
   emailError: null,
+  isLogging: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -42,6 +44,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         isValidCode: action.isValidCode,
       };
+    case SET_IS_LOGGING:
+      return {
+        ...state,
+        isLogging: action.isLogging,
+      };
     default:
       return state;
   }
@@ -61,6 +68,10 @@ export const setIsValidCode = (isValidCode) => ({
   type: SET_IS_VALID_CODE,
   isValidCode,
 });
+export const setIsLogging = (isLogging) => ({
+  type: SET_IS_LOGGING,
+  isLogging,
+});
 
 export const getCode = (email, navigate) => async (dispatch) => {
   await authAPI
@@ -69,6 +80,7 @@ export const getCode = (email, navigate) => async (dispatch) => {
       switch (res.data.status) {
         case "ok":
           dispatch(setEmail(email));
+          dispatch(setIsLogging(false));
           navigate("/entercode");
           break;
         case "email exist":
@@ -109,15 +121,52 @@ export const checkCode = (email, code) => async (dispatch) => {
     });
 };
 
-export const authMe = (uid, sid) => async (dispatch) => {
+export const authMe = (uid, sid, navigate) => async (dispatch) => {
   await authAPI
     .authMe(uid, sid)
     .then((res) => {
       if (res.data.status === "ok") {
-        console.log("first off");
-      } else {
-        // redirect
-        console.log("qaq");
+        navigate("/excursion");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+export const getRestoreCode = (email, navigate) => async (dispatch) => {
+  await authAPI.restore(email).then((res) => {
+    switch (res.data.status) {
+      case "ok":
+        dispatch(setEmail(email));
+        dispatch(setIsLogging(true));
+        navigate("/entercode");
+        break;
+      case "email not exist":
+        dispatch(setEmailError("Пользователь не зарегистрирован!"));
+        break;
+      default:
+        console.log(res);
+        dispatch(setCodeError("Что-то пошло не так. Попробуйте еще раз"));
+    }
+  });
+};
+
+export const checkRestoreCode = (email, code) => async (dispatch) => {
+  await authAPI
+    .sendRestoreCode(email, code)
+    .then((res) => {
+      console.log(res);
+      switch (res.data.status) {
+        case "ok":
+          dispatch(setUid(res.data.uid));
+          dispatch(setIsValidCode(true));
+          break;
+        case "vcode error":
+          dispatch(setCodeError("Не верный код! Попробуйте еще раз!"));
+          break;
+        default:
+          dispatch(setCodeError("Что-то пошло не так. Попробуйте еще раз"));
       }
     })
     .catch((err) => {

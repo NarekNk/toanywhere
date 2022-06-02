@@ -2,6 +2,11 @@ html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
+:root {
+  --fs-norm: 14px;
+}
+
 *,
 *::after,
 *::before {
@@ -63,7 +68,7 @@ button {
 }
 body {
   font-family: "Inter", sans-serif;
-  font-size: 14px;
+  font-size: var(--fs-norm);
   font-weight: 400;
   line-height: 1.2;
   color: #333;
@@ -78,16 +83,7 @@ body {
   padding: 0 15px;
   margin: 0 auto;
 }
-.sr-only {
-  position: absolute;
-  width: 0px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
+
 .header {
   position: fixed;
   left: 0;
@@ -231,44 +227,50 @@ body {
 .header__descr {
   display: block;
   font-weight: 700;
-  font-size: 18px;
+  font-size: calc(var(--fs-norm) + 4px);
   margin-bottom: 10px;
 }
 @media (max-width: 768px) {
   .header__descr {
-    font-size: 16px;
+    font-size: 12px;
   }
+}
+.header__time {
+  font-size: var(--fs-norm);
 }
 @media (max-width: 768px) {
   .header__time {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 .header__price {
   display: block;
-  font-size: 16px;
+  font-size: var(--fs-norm);
   margin-bottom: 15px;
 }
 .header__price span {
   font-weight: 700;
-  font-size: 18px;
+  font-size: calc(var(--fs-norm) + 3px);
 }
 @media (max-width: 768px) {
   .header__price {
-    font-size: 14px;
+    font-size: calc(var(--fs-norm)-2px);
   }
   .header__price span {
-    font-size: 16px;
+    font-size: calc(var(--fs-norm)-2px);
   }
 }
 @media (max-width: 768px) {
   .header__text {
-    font-size: 14px;
+    font-size: var(--fs-norm);
   }
+}
+.header__text {
+  font-size: var(--fs-norm);
 }
 .header__subtitle {
   font-weight: 700;
-  font-size: 19px;
+  font-size: calc(var(--fs-norm) + 4px);
   text-align: center;
   margin-bottom: 15px;
 }
@@ -346,7 +348,8 @@ body {
 }
 .form__input {
   width: 100%;
-  padding: 15px;
+  padding: 10px 15px;
+  font-size: calc(var(--fs-norm) + 2px);
   background-color: #fff;
   -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
@@ -354,40 +357,40 @@ body {
   border-radius: 7px;
 }
 .form__input::-webkit-input-placeholder {
-  font-size: 16px;
+  font-size: calc(var(--fs-norm) + 2px);
   color: #adadad;
 }
 .form__input::-moz-placeholder {
-  font-size: 16px;
+  font-size: calc(var(--fs-norm) + 2px);
   color: #adadad;
 }
 .form__input:-ms-input-placeholder {
-  font-size: 16px;
+  font-size: calc(var(--fs-norm) + 2px);
   color: #adadad;
 }
 .form__input::-ms-input-placeholder {
-  font-size: 16px;
+  font-size: calc(var(--fs-norm) + 2px);
   color: #adadad;
 }
 .form__input::placeholder {
-  font-size: 16px;
+  font-size: calc(var(--fs-norm) + 2px);
   color: #adadad;
 }
 @media (max-width: 768px) {
   .form__input::-webkit-input-placeholder {
-    font-size: 17px;
+    font-size: var(--fs-norm);
   }
   .form__input::-moz-placeholder {
-    font-size: 17px;
+    font-size: var(--fs-norm);
   }
   .form__input:-ms-input-placeholder {
-    font-size: 17px;
+    font-size: var(--fs-norm);
   }
   .form__input::-ms-input-placeholder {
-    font-size: 17px;
+    font-size: var(--fs-norm);
   }
   .form__input::placeholder {
-    font-size: 17px;
+    font-size: var(--fs-norm);
   }
 }
 @media (max-width: 768px) {
@@ -396,6 +399,7 @@ body {
   }
 }
 .form__btn {
+  font-size: calc(var(--fs-norm) + 1px);
   width: 100%;
   padding: 13px;
   font-weight: 700;
@@ -427,12 +431,13 @@ body {
   margin-bottom: 15px;
 }
 .form__descr {
+  font-size: var(--fs-norm);
   font-weight: 400;
   text-align: center;
 }
 @media (max-width: 768px) {
   .form__descr {
-    font-size: 12px;
+    font-size: calc(var(--fs-norm) - 2px);
   }
 }
 .form__link {
@@ -466,7 +471,7 @@ body {
 }
 .social__descr {
   font-weight: 600;
-  font-size: 22px;
+  font-size: calc(var(--fs-norm) + 4px);
   padding-right: 15px;
   padding-bottom: 15px;
 }
@@ -614,4 +619,11 @@ body {
   text-align: center;
   color: red;
   margin: 10px;
+  font-size: calc(var(--fs-norm) + 2px);
+}
+
+.haveAcc {
+  float: right;
+  font-size: var(--fs-norm);
+  text-decoration: underline;
 }

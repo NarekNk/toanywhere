@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { getCode } from "../redux/reducer";
 
 const Register = ({ getCode, emailError }) => {
@@ -31,6 +31,9 @@ const Register = ({ getCode, emailError }) => {
           <button className="form__btn form__btn--orange" type="submit">
             Получить код
           </button>
+          <NavLink to={"/"} className="haveAcc">
+            Есть аккаунт? Авторизируйтесь
+          </NavLink>
         </div>
 
         <div className="form__descr">

@@ -10,12 +10,10 @@ import Register from "../components/Register";
 const AuthPage = () => {
   return (
     <>
-      <h1 className="sr-only">Страница авторизации</h1>
       <header className="header">
         <div className="header__container">
           <div className="header__row">
             <HeaderTop />
-
             <Routes>
               <Route path="/entercode" element={<Code />} />
               <Route path="/register" element={<Register />} />

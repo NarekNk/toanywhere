@@ -2,21 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authMe } from "../redux/reducer";
+import { authMe, getRestoreCode } from "../redux/reducer";
 
-const Auth = ({ authMe }) => {
+const Auth = ({ authMe, getRestoreCode, emailError }) => {
   const [email, setEmail] = useState("");
+  const [emptyEmailError, setEmptyEmailError] = useState("");
   const navigate = useNavigate();
 
   const [cookies, setCookie] = useCookies([]);
 
   const submitForm = (e) => {
     e.preventDefault();
+    getRestoreCode(email, navigate);
   };
 
   useEffect(() => {
     if (cookies.uid && cookies.sid) {
-      authMe(cookies.uid, cookies.sid);
+      authMe(cookies.uid, cookies.sid, navigate);
     }
   }, []);
 
@@ -25,20 +27,30 @@ const Auth = ({ authMe }) => {
       <h3 className="header__subtitle">
         Что бы присоединиться к путешествию, авторизируйтесь
       </h3>
+      {emailError && <p className="error">{emailError}</p>}
+      {emptyEmailError && <p className="error">{emptyEmailError}</p>}
       <form className="form" onSubmit={submitForm}>
         <div className="form__inner">
           <label className="form__label">
-            <span className="sr-only">Введите вашу почту</span>
             <input
               className="form__input"
               type="email"
               name="email"
               placeholder="example@mail.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmptyEmailError("");
+              }}
             />
           </label>
-          <button className="form__btn form__btn--orange" type="submit">
+          <button
+            className="form__btn form__btn--orange"
+            type="submit"
+            onClick={() => {
+              if (email == "") setEmptyEmailError("Введите Email");
+            }}
+          >
             Войти
           </button>
           <button
@@ -67,4 +79,8 @@ const Auth = ({ authMe }) => {
   );
 };
 
-export default connect(null, { authMe })(Auth);
+const mapStateToProps = (state) => ({
+  emailError: state.emailError,
+});
+
+export default connect(mapStateToProps, { authMe, getRestoreCode })(Auth);

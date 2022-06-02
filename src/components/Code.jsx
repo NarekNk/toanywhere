@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authMe, checkCode, setCodeError } from "../redux/reducer";
+import {
+  authMe,
+  checkCode,
+  checkRestoreCode,
+  setCodeError,
+  setIsValidCode,
+} from "../redux/reducer";
 
 const Code = ({
   email,
@@ -12,6 +18,9 @@ const Code = ({
   uid,
   isValidCode,
   authMe,
+  isLogging,
+  checkRestoreCode,
+  setIsValidCode,
 }) => {
   const [code, setCode] = useState("");
   const navigate = useNavigate();
@@ -22,7 +31,11 @@ const Code = ({
   const submitForm = (e) => {
     e.preventDefault();
     if (format.test(code)) {
-      checkCode(email, code);
+      if (!isLogging) {
+        checkCode(email, code);
+      } else {
+        checkRestoreCode(email, code);
+      }
     } else {
       setCodeError("4 цифры из смс");
     }
@@ -33,7 +46,8 @@ const Code = ({
       setCookie("uid", uid, { path: "/" });
       const sid = String(Math.random().toFixed(19)).slice(2, 21);
       setCookie("sid", sid, { path: "/" });
-      authMe(uid, sid);
+      authMe(uid, sid, navigate);
+      setIsValidCode(false);
     }
   }, [isValidCode]);
 
@@ -44,7 +58,6 @@ const Code = ({
       <form className="form" onSubmit={submitForm}>
         <div className="form__inner" style={{ width: "45%" }}>
           <label className="form__label">
-            <span className="sr-only">Введите вашу почту</span>
             <input
               className="form__input"
               type="text"
@@ -69,9 +82,14 @@ const mapStateToProps = (state) => {
     codeError: state.codeError,
     uid: state.uid,
     isValidCode: state.isValidCode,
+    isLogging: state.isLogging,
   };
 };
 
-export default connect(mapStateToProps, { checkCode, setCodeError, authMe })(
-  Code
-);
+export default connect(mapStateToProps, {
+  checkCode,
+  setCodeError,
+  authMe,
+  checkRestoreCode,
+  setIsValidCode,
+})(Code);

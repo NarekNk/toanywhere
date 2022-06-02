@@ -22,6 +22,13 @@ export const authAPI = {
     });
     return instance.post(`auth?uid=${uid}&sid=${sid}`, body);
   },
+  restore(email) {
+    return instance.get(`registration?email=${email}&restore`);
+  },
+  sendRestoreCode(email, code) {
+    const body = JSON.stringify({ vcode: Number(code) });
+    return instance.post(`registration?email=${email}&restore`, body);
+  },
 };
 
 export const excursionsAPI = {};
