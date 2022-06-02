@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/toanywhere/static/css/main.20fe053c.css",
-    "main.js": "/toanywhere/static/js/main.b9bead05.js",
+    "main.css": "/toanywhere/static/css/main.4526d898.css",
+    "main.js": "/toanywhere/static/js/main.bc167c63.js",
     "static/media/bg-body.png": "/toanywhere/static/media/bg-body.b04f64bc040ee230190e.png",
     "static/media/Roboto-Bold.woff": "/toanywhere/static/media/Roboto-Bold.3f2cbde6b72e8d05669f.woff",
     "static/media/Roboto-Regular.woff": "/toanywhere/static/media/Roboto-Regular.31012f9b3e3da44f87e8.woff",
@@ -18,11 +18,11 @@
     "static/media/aw-join1.svg": "/toanywhere/static/media/aw-join1.39acc5faa3596bb20d1f.svg",
     "static/media/vk.svg": "/toanywhere/static/media/vk.d8b83483e4565c1740f4bad3846eba19.svg",
     "index.html": "/toanywhere/index.html",
-    "main.20fe053c.css.map": "/toanywhere/static/css/main.20fe053c.css.map",
-    "main.b9bead05.js.map": "/toanywhere/static/js/main.b9bead05.js.map"
+    "main.4526d898.css.map": "/toanywhere/static/css/main.4526d898.css.map",
+    "main.bc167c63.js.map": "/toanywhere/static/js/main.bc167c63.js.map"
   },
   "entrypoints": [
-    "static/css/main.20fe053c.css",
-    "static/js/main.b9bead05.js"
+    "static/css/main.4526d898.css",
+    "static/js/main.bc167c63.js"
   ]
 }
