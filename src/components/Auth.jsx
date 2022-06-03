@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authMe, getRestoreCode } from "../redux/reducer";
+import { authMe, getRestoreCode } from "../redux/authReducer";
 
-const Auth = ({ authMe, getRestoreCode, emailError }) => {
+const Auth = ({ ex_tid, authMe, getRestoreCode, emailError }) => {
   const [email, setEmail] = useState("");
   const [emptyEmailError, setEmptyEmailError] = useState("");
   const navigate = useNavigate();
 
-  const [cookies, setCookie] = useCookies([]);
+  const [cookies, setCookies] = useCookies([]);
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -18,7 +18,7 @@ const Auth = ({ authMe, getRestoreCode, emailError }) => {
 
   useEffect(() => {
     if (cookies.uid && cookies.sid) {
-      authMe(cookies.uid, cookies.sid, navigate);
+      authMe(cookies.uid, cookies.sid, ex_tid, navigate);
     }
   }, []);
 
@@ -79,8 +79,11 @@ const Auth = ({ authMe, getRestoreCode, emailError }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  emailError: state.emailError,
-});
+const mapStateToProps = (state) => {
+  return {
+    emailError: state.auth.emailError,
+    ex_tid: state.auth.ex_tid,
+  };
+};
 
 export default connect(mapStateToProps, { authMe, getRestoreCode })(Auth);

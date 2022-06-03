@@ -4,14 +4,16 @@ const instance = axios.create({
   baseURL: "https://st.2aw.io:8081/",
 });
 
-export const authAPI = {
+const authAPI = {
   getCode(email) {
     return instance(`registration?email=${email}`);
   },
+
   sendCode(email, code) {
     const body = JSON.stringify({ vcode: Number(code) });
     return instance.post(`registration?email=${email}`, body);
   },
+
   authMe(uid, sid) {
     const date = new Date();
     const minutes = -date.getTimezoneOffset();
@@ -22,13 +24,15 @@ export const authAPI = {
     });
     return instance.post(`auth?uid=${uid}&sid=${sid}`, body);
   },
+
   restore(email) {
     return instance.get(`registration?email=${email}&restore`);
   },
+
   sendRestoreCode(email, code) {
     const body = JSON.stringify({ vcode: Number(code) });
     return instance.post(`registration?email=${email}&restore`, body);
   },
 };
 
-export const excursionsAPI = {};
+export default authAPI;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getCode } from "../redux/reducer";
+import { getCode } from "../redux/authReducer";
 
 const Register = ({ getCode, emailError }) => {
   const [email, setEmail] = useState("");
@@ -53,7 +53,7 @@ const Register = ({ getCode, emailError }) => {
 
 const mapStateToProps = (state) => {
   return {
-    emailError: state.emailError,
+    emailError: state.auth.emailError,
   };
 };
 

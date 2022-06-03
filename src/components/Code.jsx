@@ -8,7 +8,7 @@ import {
   checkRestoreCode,
   setCodeError,
   setIsValidCode,
-} from "../redux/reducer";
+} from "../redux/authReducer";
 
 const Code = ({
   email,
@@ -16,6 +16,7 @@ const Code = ({
   codeError,
   setCodeError,
   uid,
+  ex_tid,
   isValidCode,
   authMe,
   isLogging,
@@ -46,7 +47,7 @@ const Code = ({
       setCookie("uid", uid, { path: "/" });
       const sid = String(Math.random().toFixed(19)).slice(2, 21);
       setCookie("sid", sid, { path: "/" });
-      authMe(uid, sid, navigate);
+      authMe(uid, sid, ex_tid, navigate);
       setIsValidCode(false);
     }
   }, [isValidCode]);
@@ -78,11 +79,12 @@ const Code = ({
 
 const mapStateToProps = (state) => {
   return {
-    email: state.email,
-    codeError: state.codeError,
-    uid: state.uid,
-    isValidCode: state.isValidCode,
-    isLogging: state.isLogging,
+    email: state.auth.email,
+    codeError: state.auth.codeError,
+    uid: state.auth.uid,
+    isValidCode: state.auth.isValidCode,
+    isLogging: state.auth.isLogging,
+    ex_tid: state.auth.ex_tid,
   };
 };
 
