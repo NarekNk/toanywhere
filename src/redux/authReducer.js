@@ -1,15 +1,31 @@
 import authAPI from "../api/authApi";
 import excursionAPI from "../api/excursionApi";
-
-const SET_EMAIL = "SET_EMAIL";
-const SET_UID = "SET_UID";
-const SET_CODE_ERROR = "SET_CODE_ERROR";
-const SET_EMAIL_ERROR = "SET_EMAIL_ERROR";
-const SET_IS_VALID_CODE = "SET_IS_VALID_CODE";
-const SET_IS_LOGGING = "SET_IS_LOGGING";
-
-const SET_EXCURSION_DATA = "SET_EXCURSION_DATA";
-const SET_IS_JOINED = "SET_IS_JOINED";
+import {
+  setCodeError,
+  setEmail,
+  setEmailError,
+  setExCurrent,
+  setExcursionData,
+  setIsJoined,
+  setIsLoading,
+  setIsLogging,
+  setIsValidCode,
+  setMessage,
+  setPayPurpose,
+  setStreamData,
+  setUid,
+  SET_CODE_ERROR,
+  SET_EMAIL,
+  SET_EMAIL_ERROR,
+  SET_EX_CURRENT,
+  SET_IS_LOADING,
+  SET_IS_LOGGING,
+  SET_IS_VALID_CODE,
+  SET_MESSAGE,
+  SET_PAY_PURPOSE,
+  SET_STREAM_DATA,
+  SET_UID,
+} from "./actions";
 
 const initialState = {
   isAuth: false,
@@ -19,13 +35,27 @@ const initialState = {
   codeError: null,
   emailError: null,
   isLogging: null,
+
+  isLoading: false,
+
   ex_tid: 3866,
 
   ex_status: null,
   ex_name: null,
   ex_description: null,
-  ex_start_time: null,
+  ex_time_start: null,
+
   ex_h_cost: null,
+
+  ex_current: null,
+
+  message: {
+    messageText: null,
+    func: null,
+    backTo: null,
+  },
+
+  payPurpose: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -34,6 +64,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         email: action.email,
+      };
+    case SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.isLoading,
       };
     case SET_UID:
       return {
@@ -60,45 +95,35 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isLogging: action.isLogging,
       };
+    case SET_EX_CURRENT:
+      return {
+        ...state,
+        ex_current: action.ex_current,
+      };
+    case SET_STREAM_DATA:
+      return {
+        ...state,
+        ex_room_id: action.ex_room_id,
+        ex_stream_id: action.ex_stream_id,
+      };
+    case SET_MESSAGE:
+      return {
+        ...state,
+        message: {
+          messageText: action.payload.messageText,
+          func: action.payload.func,
+          backTo: action.payload.backTo,
+        },
+      };
+    case SET_PAY_PURPOSE:
+      return {
+        ...state,
+        payPurpose: action.payPurpose,
+      };
     default:
       return state;
   }
 };
-
-export const setEmail = (email) => ({ type: SET_EMAIL, email });
-export const setUid = (uid) => ({ type: SET_UID, uid });
-export const setCodeError = (codeError) => ({
-  type: SET_CODE_ERROR,
-  codeError,
-});
-export const setEmailError = (emailError) => ({
-  type: SET_EMAIL_ERROR,
-  emailError,
-});
-export const setIsValidCode = (isValidCode) => ({
-  type: SET_IS_VALID_CODE,
-  isValidCode,
-});
-export const setIsLogging = (isLogging) => ({
-  type: SET_IS_LOGGING,
-  isLogging,
-});
-
-export const setIsJoined = (isJoined) => ({ type: SET_IS_JOINED, isJoined });
-export const setExcursionData = (
-  ex_status,
-  ex_name,
-  ex_description,
-  ex_start_time,
-  ex_h_cost
-) => ({
-  type: SET_EXCURSION_DATA,
-  ex_status,
-  ex_name,
-  ex_description,
-  ex_start_time,
-  ex_h_cost,
-});
 
 export const getCode = (email, navigate) => async (dispatch) => {
   await authAPI
@@ -148,144 +173,135 @@ export const checkCode = (email, code) => async (dispatch) => {
     });
 };
 
-export const authMe = (uid, sid, ex_tid, navigate) => async (dispatch) => {
-  // debugger;
-  const data = await authAPI
-    .authMe(uid, sid)
-    .then((res) => res.data)
-    .catch((err) => {
-      console.log(err);
-    });
-
-  if (data.status === "ok") {
-    await excursionAPI
-      .join(uid, sid, ex_tid)
-      .then((res) => {
-        if (res.data.status === "ok") {
-          // punkt 9
-          console.log(res);
-          dispatch(setIsJoined(true));
-          excursionAPI.getExcursion(uid, sid, ex_tid).then((result) => {
-            if (result.data.status === "ok") {
-              // punkt 10
-              const excursions = result.data.excursions[0];
-              switch (excursions.ex_status) {
-                case "in_progress":
-                case "grp_wait_start_by_user":
-                  // punkt 12
-                  console.log("qaq");
-                  if (excursions.ex_h_cost === 0) {
-                    // punkt 13
+// punkt 9
+const alreadyOk = async (uid, sid, ex_tid, navigate, dispatch, getState) => {
+  const ex_current = getState().auth.ex_current;
+  dispatch(setIsJoined(true));
+  await excursionAPI.getExcursion(uid, sid, ex_tid).then((result) => {
+    if (result.data.status === "ok") {
+      // punkt 10
+      const excursions = result.data.excursions[0];
+      switch (excursions.ex_status) {
+        case "in_progress":
+        case "grp_wait_start_by_user":
+          // case "grp_accepted_by_user":
+          // punkt 12
+          if (excursions.ex_h_cost === 0) {
+            // punkt 13
+            console.log("0");
+            excursionAPI
+              .patchExcursionStart(uid, sid, ex_tid)
+              .then((patchResponse) => {
+                console.log(patchResponse);
+                if (patchResponse.data.status === "ok") {
+                  // punkt 13.1
+                  let isStarted = false;
+                  let interval = setInterval(() => {
+                    if (isStarted) {
+                      clearInterval(interval);
+                    }
+                    // console.log(1);
                     excursionAPI
-                      .patchExcursionStart(uid, sid, ex_tid)
-                      .then((patchResponse) => {
-                        console.log(patchResponse);
-                        if (patchResponse.data.status === "ok") {
-                          // punkt 13.1
-                          setInterval(() => console.log(1));
-                        } else {
-                          // try again punkt 13
+                      .getExcursion(uid, sid, ex_tid)
+                      .then((response) => {
+                        if (response.data.status === "ok") {
+                          const newExcursions = response.data.excursions[0];
+                          dispatch(setExCurrent(newExcursions));
+                          if (newExcursions.ex_status === "in_progress") {
+                            dispatch(
+                              setStreamData(
+                                newExcursions.ex_room_id,
+                                newExcursions.ex_stream_id
+                              )
+                            );
+                            // start stream
+
+                            isStarted = true;
+                            navigate("/stream");
+                            // punkt 15
+                          }
                         }
                       });
-                  } else {
-                    console.log("pox chka");
-                    //punkt 14
-                  }
-                  break;
-                case "grp_accepted_by_user":
-                  //punkt 11
-
-                  navigate("/excursion");
-
-                  dispatch(
-                    setExcursionData(
-                      excursions.ex_status,
-                      excursions.ex_name,
-                      excursions.ex_description,
-                      excursions.ex_start_time,
-                      excursions.ex_h_cost
-                    )
-                  );
-                  break;
-                default:
-                  console.log(result.data.excursions.ex_status);
-              }
-            } else {
-              // try again screen
-            }
-          });
-        }
-      })
-      .catch((err) => {
-        switch (err.response.data.status) {
-          case "already_join":
-            // punkt 9
-
-            dispatch(setIsJoined(true));
-            excursionAPI.getExcursion(uid, sid, ex_tid).then((result) => {
-              if (result.data.status === "ok") {
-                // punkt 10
-                const excursions = result.data.excursions[0];
-                switch (excursions.ex_status) {
-                  case "in_progress":
-                  case "grp_wait_start_by_user":
-                    // punkt 12
-                    console.log("qaq");
-                    if (excursions.ex_h_cost === 0) {
-                      // punkt 13
-                      excursionAPI
-                        .patchExcursionStart(uid, sid, ex_tid)
-                        .then((patchResponse) => {
-                          console.log(patchResponse);
-                          if (patchResponse.data.status === "ok") {
-                            // punkt 13.1
-                            setInterval(() => console.log(1));
-                          } else {
-                            // try again punkt 13
-                          }
-                        });
-                    } else {
-                      console.log("pox chka");
-                      //punkt 14
-                    }
-                    break;
-                  case "grp_accepted_by_user":
-                    //punkt 11
-
-                    navigate("/excursion");
-
-                    dispatch(
-                      setExcursionData(
-                        excursions.ex_status,
-                        excursions.ex_name,
-                        excursions.ex_description,
-                        excursions.ex_start_time,
-                        excursions.ex_h_cost
-                      )
-                    );
-                    break;
-                  default:
-                    console.log(result.data.excursions.ex_status);
+                  }, 1000);
+                } else {
+                  // try again punkt 13
                 }
-              } else {
-                // try again screen
-              }
-            });
-            break;
-          case "forbidden":
-            // show error message
-            console.log("forbidden");
-            break;
-          case "limit_reached":
-            // show loading screen
-            console.log("limit reached");
-            break;
-          default:
-            console.log("default");
-        }
-      });
-  }
+              });
+          } else {
+            //punkt 14
+            const pay_purpose = ex_current?.ex_fix_cost_mode_grp
+              ? "fix_cost"
+              : "prepay";
+            dispatch(setPayPurpose(pay_purpose));
+
+            // payment
+          }
+          break;
+        case "grp_accepted_by_user":
+          //punkt 11
+          navigate("/excursion");
+
+          dispatch(
+            setExcursionData(
+              excursions.ex_status,
+              excursions.ex_name,
+              excursions.ex_description,
+              excursions.ex_time_start,
+              excursions.ex_h_cost
+            )
+          );
+          break;
+        default:
+          console.log(result.data.excursions.ex_status);
+      }
+    } else {
+      let messageText = "Что-то пошло не так. Попробуйте еще раз";
+      let func = () => alreadyOk(uid, sid, ex_tid, navigate, dispatch);
+      dispatch(setMessage(messageText, func, "/excursion"));
+    }
+  });
 };
+
+export const authMe =
+  (uid, sid, ex_tid, ex_current, navigate) => async (dispatch, getState) => {
+    const data = await authAPI
+      .authMe(uid, sid)
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (data.status === "ok") {
+      await excursionAPI
+        .join(uid, sid, ex_tid)
+        .then((res) => {
+          if (res.data.status === "ok") {
+            // punkt 9
+            alreadyOk(uid, sid, ex_tid, navigate, dispatch, getState);
+          }
+        })
+        .catch((err) => {
+          switch (err.response.data.status) {
+            case "already_join":
+              // punkt 9
+              alreadyOk(uid, sid, ex_tid, navigate, dispatch, getState);
+              break;
+            case "forbidden":
+              // show error message
+              dispatch(setIsLoading(true));
+              console.log("forbidden");
+              break;
+            case "limit_reached":
+              // show loading screen
+              dispatch(setIsLoading(true));
+              console.log("limit reached");
+              break;
+            default:
+              console.log("default");
+          }
+        });
+    }
+  };
 
 export const getRestoreCode = (email, navigate) => async (dispatch) => {
   await authAPI.restore(email).then((res) => {

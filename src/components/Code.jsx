@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  authMe,
-  checkCode,
-  checkRestoreCode,
-  setCodeError,
-  setIsValidCode,
-} from "../redux/authReducer";
+import { setCodeError, setIsValidCode } from "../redux/actions";
+import { authMe, checkCode, checkRestoreCode } from "../redux/authReducer";
 
 const Code = ({
   email,
@@ -22,6 +17,7 @@ const Code = ({
   isLogging,
   checkRestoreCode,
   setIsValidCode,
+  ex_current,
 }) => {
   const [code, setCode] = useState("");
   const navigate = useNavigate();
@@ -47,7 +43,7 @@ const Code = ({
       setCookie("uid", uid, { path: "/" });
       const sid = String(Math.random().toFixed(19)).slice(2, 21);
       setCookie("sid", sid, { path: "/" });
-      authMe(uid, sid, ex_tid, navigate);
+      authMe(uid, sid, ex_tid, ex_current, navigate);
       setIsValidCode(false);
     }
   }, [isValidCode]);
@@ -85,6 +81,7 @@ const mapStateToProps = (state) => {
     isValidCode: state.auth.isValidCode,
     isLogging: state.auth.isLogging,
     ex_tid: state.auth.ex_tid,
+    ex_current: state.auth.ex_current,
   };
 };
 

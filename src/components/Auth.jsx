@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authMe, getRestoreCode } from "../redux/authReducer";
 
-const Auth = ({ ex_tid, authMe, getRestoreCode, emailError }) => {
+const Auth = ({ ex_tid, authMe, getRestoreCode, emailError, ex_current }) => {
   const [email, setEmail] = useState("");
   const [emptyEmailError, setEmptyEmailError] = useState("");
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Auth = ({ ex_tid, authMe, getRestoreCode, emailError }) => {
 
   useEffect(() => {
     if (cookies.uid && cookies.sid) {
-      authMe(cookies.uid, cookies.sid, ex_tid, navigate);
+      authMe(cookies.uid, cookies.sid, ex_tid, ex_current, navigate);
     }
   }, []);
 
@@ -83,6 +83,7 @@ const mapStateToProps = (state) => {
   return {
     emailError: state.auth.emailError,
     ex_tid: state.auth.ex_tid,
+    ex_current: state.auth.ex_current,
   };
 };
 

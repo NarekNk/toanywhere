@@ -1,10 +1,11 @@
 import excursionAPI from "../api/excursionApi";
-
-const SET_IS_JOINED = "SET_IS_JOINED";
-const SET_FORBIDDEN = "SET_FORBIDDEN";
-const SET_LIMIT_REACHED = "SET_LIMIT_REACHED";
-
-const SET_EXCURSION_DATA = "SET_EXCURSION_DATA";
+import {
+  setExcursionData,
+  SET_EXCURSION_DATA,
+  SET_FORBIDDEN,
+  SET_IS_JOINED,
+  SET_LIMIT_REACHED,
+} from "./actions";
 
 const initialState = {
   joined: false,
@@ -13,7 +14,8 @@ const initialState = {
   ex_status: null,
   ex_name: null,
   ex_description: null,
-  ex_start_time: null,
+  //   ex_start_time: null,
+  ex_time_start: null,
   ex_h_cost: null,
 };
 
@@ -40,29 +42,13 @@ const excursionReducer = (state = initialState, action) => {
         ex_status: action.ex_status,
         ex_name: action.ex_name,
         ex_description: action.ex_description,
-        ex_start_time: action.ex_start_time,
+        ex_time_start: action.ex_time_start,
         ex_h_cost: action.ex_h_cost,
       };
     default:
       return state;
   }
 };
-
-export const setIsJoined = (isJoined) => ({ type: SET_IS_JOINED, isJoined });
-export const setExcursionData = (
-  ex_status,
-  ex_name,
-  ex_description,
-  ex_start_time,
-  ex_h_cost
-) => ({
-  type: SET_EXCURSION_DATA,
-  ex_status,
-  ex_name,
-  ex_description,
-  ex_start_time,
-  ex_h_cost,
-});
 
 export const joinMe = (uid, sid, ex_tid) => async (dispatch) => {
   await excursionAPI.getExcursion(uid, sid, ex_tid).then((result) => {
@@ -98,7 +84,7 @@ export const joinMe = (uid, sid, ex_tid) => async (dispatch) => {
               excursions.ex_status,
               excursions.ex_name,
               excursions.ex_description,
-              excursions.ex_start_time,
+              excursions.ex_time_start,
               excursions.ex_h_cost
             )
           );

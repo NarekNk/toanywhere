@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import logo from "../../images1/logo.svg";
 import appstore from "../../images/icons/appstore.svg";
 import google from "../../images/icons/google.svg";
@@ -9,14 +9,16 @@ import { connect } from "react-redux";
 import { joinMe } from "../../redux/excursionReducer";
 import { useCookies } from "react-cookie";
 import DownloadLinks from "../../components/DownloadLinks";
+import Preloader from "../Preloader/Preloader";
 
 const StartPage = ({
   isJoined,
+  isLoading,
   joinMe,
   ex_tid,
   ex_name,
   ex_h_cost,
-  ex_start_time,
+  ex_time_start,
 }) => {
   const downloadLinks = [
     {
@@ -30,21 +32,34 @@ const StartPage = ({
       bgImage: appstore,
     },
   ];
-  const [cookies, setCookies] = useCookies([]);
-  // useEffect(() => {
-  // let uid = cookies.uid;
-  // let sid = cookies.sid;
 
-  //   if (!isJoined) {
-  //     // joinMe(uid, sid, ex_tid);
-  //   }
-  // }, []);
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    if (ex_time_start) {
+      let startDate = Date.parse(ex_time_start);
+      let newDate = new Date(startDate);
+      let year = newDate.getFullYear();
+      let month = newDate.getMonth();
+      month = month < 10 ? `0${month}` : month;
+      let day = newDate.getDate();
+      day = day < 10 ? `0${day}` : day;
+      let hour = newDate.getHours();
+      hour = hour < 10 ? `0${hour}` : hour;
+      let minute = newDate.getMinutes();
+      minute = minute < 10 ? `0${minute}` : minute;
+      setTime(`${day}.${month}.${year} ${hour}:${minute}`);
+    }
+  }, [ex_time_start]);
+
+  const [cookies, setCookies] = useCookies([]);
 
   const openExcusrsion = () => {
     let uid = cookies.uid;
     let sid = cookies.sid;
     joinMe(uid, sid, ex_tid);
   };
+
+  if (isLoading) return <Preloader />;
 
   return (
     <header className={s.header}>
@@ -68,17 +83,14 @@ const StartPage = ({
               height="170"
             />
           </div>
-          {/* <h1 className={s.header__title}>Экскурсия по Москве</h1> */}
           <h1 className={s.header__title}>{ex_name}</h1>
           <div className={s.header__price}>
-            {/* Стоимость: <span id="total">400 </span>₽ */}
             Стоимость: <span id="total">{ex_h_cost} </span>₽
           </div>
           <div className={s.header__timer}>
             Время старта:{" "}
-            <time className={s.header__time} dateTime="2022-11.05 13:40">
-              {/* 11.05.2022 13:40 */}
-              {ex_start_time}
+            <time className={s.header__time} dateTime={time}>
+              {time}
             </time>
           </div>
           <button className={s.header__app} onClick={openExcusrsion}>
@@ -99,8 +111,10 @@ const mapStateToProps = (state) => {
 
     ex_name: state.excursion.ex_name,
     ex_description: state.excursion.ex_description,
-    ex_start_time: state.excursion.ex_start_time,
+    ex_time_start: state.excursion.ex_time_start,
     ex_h_cost: state.excursion.ex_h_cost,
+
+    isLoading: state.auth.isLoading,
   };
 };
 

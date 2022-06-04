@@ -1,0 +1,178 @@
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #333;
+  overflow-x: hidden;
+}
+.preloder {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.preloder__airplane {
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+.preloder__img {
+  -webkit-transform: translateX(-86px);
+  -ms-transform: translateX(-86px);
+  transform: translateX(-86px);
+  padding-top: 5px;
+  -webkit-animation-name: airaplane;
+  animation-name: airaplane;
+  -webkit-animation-duration: 10s;
+  animation-duration: 10s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  position: relative;
+}
+.preloder__text {
+  width: 350px;
+  height: 62px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+.line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  -webkit-transform: translateY(-50%) translateX(-86px);
+  -ms-transform: translateY(-50%) translateX(-86px);
+  transform: translateY(-50%) translateX(-86px);
+  background-color: #ff7c33;
+  height: 2px;
+  -webkit-animation-name: fills;
+  animation-name: fills;
+  -webkit-animation-duration: 10s;
+  animation-duration: 10s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+@-webkit-keyframes airaplane {
+  0% {
+    -webkit-transform: translateX(-86px);
+    transform: translateX(-86px);
+  }
+  49% {
+    -webkit-transform: translateX(100vw);
+    transform: translateX(100vw);
+  }
+  50% {
+    -webkit-transform: translateX(100vw) scale(-1, 1);
+    transform: translateX(100vw) scale(-1, 1);
+  }
+  99% {
+    -webkit-transform: translateX(-86px) scale(-1, 1);
+    transform: translateX(-86px) scale(-1, 1);
+  }
+  100% {
+    -webkit-transform: translateX(-86px);
+    transform: translateX(-86px);
+  }
+}
+@keyframes airaplane {
+  0% {
+    -webkit-transform: translateX(-86px);
+    transform: translateX(-86px);
+  }
+  49% {
+    -webkit-transform: translateX(100vw);
+    transform: translateX(100vw);
+  }
+  50% {
+    -webkit-transform: translateX(100vw) scale(-1, 1);
+    transform: translateX(100vw) scale(-1, 1);
+  }
+  99% {
+    -webkit-transform: translateX(-86px) scale(-1, 1);
+    transform: translateX(-86px) scale(-1, 1);
+  }
+  100% {
+    -webkit-transform: translateX(-86px);
+    transform: translateX(-86px);
+  }
+}
+@-webkit-keyframes fills {
+  0% {
+    -webkit-transform: translateX(calc(-100% - 86px));
+    transform: translateX(calc(-100% - 86px));
+  }
+  49% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  50% {
+    -webkit-transform: translateX(calc(100% + 86px));
+    transform: translateX(calc(100% + 86px));
+    opacity: 0;
+  }
+  51% {
+    opacity: 1;
+  }
+  99% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(calc(-100% - 86px));
+    transform: translateX(calc(-100% - 86px));
+  }
+}
+@keyframes fills {
+  0% {
+    -webkit-transform: translateX(calc(-100% - 86px));
+    transform: translateX(calc(-100% - 86px));
+  }
+  49% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  50% {
+    -webkit-transform: translateX(calc(100% + 86px));
+    transform: translateX(calc(100% + 86px));
+    opacity: 0;
+  }
+  51% {
+    opacity: 1;
+  }
+  99% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(calc(-100% - 86px));
+    transform: translateX(calc(-100% - 86px));
+  }
+}
