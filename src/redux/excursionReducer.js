@@ -6,6 +6,7 @@ import {
   SET_IS_JOINED,
   SET_LIMIT_REACHED,
 } from "./actions";
+import { alreadyOk } from "./authReducer";
 
 const initialState = {
   joined: false,
@@ -14,7 +15,6 @@ const initialState = {
   ex_status: null,
   ex_name: null,
   ex_description: null,
-  //   ex_start_time: null,
   ex_time_start: null,
   ex_h_cost: null,
 };
@@ -50,56 +50,9 @@ const excursionReducer = (state = initialState, action) => {
   }
 };
 
-export const joinMe = (uid, sid, ex_tid) => async (dispatch) => {
-  await excursionAPI.getExcursion(uid, sid, ex_tid).then((result) => {
-    if (result.data.status === "ok") {
-      const excursions = result.data.excursions[0];
-      switch (excursions.ex_status) {
-        case "in_progress":
-        case "grp_wait_start_by_user":
-          // punkt 12
-          console.log("qaq");
-          if (excursions.ex_h_cost === 0) {
-            // punkt 13
-            excursionAPI
-              .patchExcursionStart(uid, sid, ex_tid)
-              .then((patchResponse) => {
-                console.log(patchResponse);
-                if (patchResponse.data.status === "ok") {
-                  // punkt 13.1
-                  setInterval(() => console.log(1));
-                } else {
-                  // try again punkt 13
-                }
-              });
-          } else {
-            console.log("pox chka");
-            //punkt 14
-          }
-          break;
-        case "grp_accepted_by_user":
-          //punkt 11
-          dispatch(
-            setExcursionData(
-              excursions.ex_status,
-              excursions.ex_name,
-              excursions.ex_description,
-              excursions.ex_time_start,
-              excursions.ex_h_cost
-            )
-          );
-          break;
-        default:
-          console.log(result.data.excursions.ex_status);
-      }
-    }
-  });
+export const joinMe = (uid, sid, ex_tid, navigate) => async (dispatch, getState) => {
+  alreadyOk(uid, sid, ex_tid, navigate, dispatch, getState);
 };
 
-export const getExcursion = (uid, sid, ex_tid) => async (dispatch) => {
-  await excursionAPI.getExcursion(uid, sid, ex_tid).then((res) => {
-    // console.log(res.data.excursions);
-  });
-};
 
 export default excursionReducer;

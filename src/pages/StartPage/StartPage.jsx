@@ -10,6 +10,8 @@ import { joinMe } from "../../redux/excursionReducer";
 import { useCookies } from "react-cookie";
 import DownloadLinks from "../../components/DownloadLinks";
 import Preloader from "../Preloader/Preloader";
+import { useNavigate } from "react-router-dom";
+
 
 const StartPage = ({
   isJoined,
@@ -52,11 +54,11 @@ const StartPage = ({
   }, [ex_time_start]);
 
   const [cookies, setCookies] = useCookies([]);
-
+  const navigate = useNavigate();
   const openExcusrsion = () => {
     let uid = cookies.uid;
     let sid = cookies.sid;
-    joinMe(uid, sid, ex_tid);
+    joinMe(uid, sid, ex_tid, navigate);
   };
 
   if (isLoading) return <Preloader />;

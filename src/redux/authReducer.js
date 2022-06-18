@@ -174,13 +174,14 @@ export const checkCode = (email, code) => async (dispatch) => {
 };
 
 // punkt 9
-const alreadyOk = async (uid, sid, ex_tid, navigate, dispatch, getState) => {
+export const alreadyOk = async (uid, sid, ex_tid, navigate, dispatch, getState) => {
   const ex_current = getState().auth.ex_current;
   dispatch(setIsJoined(true));
-  await excursionAPI.getExcursion(uid, sid, ex_tid).then((result) => {
-    if (result.data.status === "ok") {
+  excursionAPI.getExcursion(uid, sid, ex_tid).then((result) => {
+    if (result?.data?.status === "ok") {
       // punkt 10
-      const excursions = result.data.excursions[0];
+      console.log(result)
+      const excursions = result?.data?.excursions[0];
       switch (excursions.ex_status) {
         case "in_progress":
         case "grp_wait_start_by_user":
@@ -233,7 +234,6 @@ const alreadyOk = async (uid, sid, ex_tid, navigate, dispatch, getState) => {
               ? "fix_cost"
               : "prepay";
             dispatch(setPayPurpose(pay_purpose));
-
             // payment
           }
           break;

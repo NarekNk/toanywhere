@@ -18,6 +18,7 @@ const Auth = ({ ex_tid, authMe, getRestoreCode, emailError, ex_current }) => {
 
   useEffect(() => {
     if (cookies.uid && cookies.sid) {
+      debugger;
       authMe(cookies.uid, cookies.sid, ex_tid, ex_current, navigate);
     }
   }, []);
